@@ -70,7 +70,6 @@ const handleSelection = (selectedValue: string | number) => {
 
 <template>
   <div class="p-6">
-    <h1 class="text-xl font-bold mb-4">Escolha uma Opção</h1>
     <!-- Report selection Dropdown -->
     <div class="mb-4 p-4 border rounded-lg inline-block">
       <DropdownSelect
@@ -85,7 +84,7 @@ const handleSelection = (selectedValue: string | number) => {
     <Transition name="fade">
       <div
         v-if="selectedReport !== null"
-        class="mt-6 p-4 pb-20 border rounded-lg bg-gray-100 dark:bg-zinc-800/60 relative"
+        class="mt-6 p-4 pb-4 border rounded-lg bg-gray-100 dark:bg-zinc-800/60 relative"
       >
         <!-- Using :key forces a re-mount when selectedReport changes -->
         <ReportForm

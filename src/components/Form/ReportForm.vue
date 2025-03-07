@@ -1,8 +1,7 @@
-
-
 <script setup lang="ts">
 import { reactive, defineProps } from 'vue';
-import { useReportStore } from '@/stores/report.store.ts'; // import the store
+import { useReportStore } from '@/stores/report.store';
+import { useManualServiceStore } from '@/stores/manual-service.store';
 import Input from "@/components/Form/Input.vue";
 import DropdownSelect from "@/components/DropDownBox.vue";
 import Button from "@/components/Button.vue";
@@ -10,7 +9,7 @@ import Button from "@/components/Button.vue";
 type FieldOption = {
   value: any;
   label: string;
-}
+};
 
 type FieldConfig = {
   key: string;
@@ -18,11 +17,13 @@ type FieldConfig = {
   label: string;
   placeholder?: string;
   options?: FieldOption[];
-}
+};
 
 const props = defineProps<{
   title: string;
   fields: FieldConfig[];
+  // if reportType is 'manualService', the manual-service store will be used.
+  reportType?: 'manualService';
 }>();
 
 // Initialize reactive form values
@@ -53,12 +54,17 @@ const updateValue = (key: string, value: any) => {
   formValues[key] = value;
 };
 
-// Access the report store
+// Access the stores
 const reportStore = useReportStore();
+const manualServiceStore = useManualServiceStore();
 
-// Updated report generation function using the store
-const generateReport =  () => {
-  reportStore.generateReport(formValues);
+// Updated report generation function based on reportType
+const generateReport = () => {
+  if (props.reportType === 'manualService') {
+    manualServiceStore.generateReport(formValues);
+  } else {
+    reportStore.generateReport(formValues);
+  }
 };
 </script>
 

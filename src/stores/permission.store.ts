@@ -9,7 +9,7 @@ export const usePermissionStore = defineStore('permission', () => {
   const role = computed(() => authStore.authentication?.role)
 
   const permissions: Record<UserRole, { allowedRoutes: string[]; defaultRedirect?: string }> = {
-    ADMIN: { allowedRoutes: ['/login', '/home', '/self-service', '/products', '/reports'] },
+    ADMIN: { allowedRoutes: ['/login', '/home', '/self-service', '/products', '/reports', '/manual-service'] },
     SELF_SERVICE: { allowedRoutes: ['/login', '/self-service'], defaultRedirect: '/self-service' },
     EMPLOYEE: { allowedRoutes: [] },
     STOCK: { allowedRoutes: [] },
