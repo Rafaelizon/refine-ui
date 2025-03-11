@@ -2,6 +2,10 @@
 import RouterButton from '@/components/RouterButton.vue';
 import Section from '@/components/Section.vue';
 import HomeReportBox from '@/components/HomeReportBox.vue';
+import { useListOrderStore } from '@/stores/listOrderStore';
+import { toCurrency } from '@/utils/currency';
+
+const listOrderStore = useListOrderStore()
 
 </script>
 
@@ -34,19 +38,18 @@ import HomeReportBox from '@/components/HomeReportBox.vue';
         Remover Pedido
       </RouterButton>
     </div>
-  </Section>
-  <section>
-      <footer class="mt-auto bg-white-800 dark:bg-zinc-800 shadow-md">
-        <div class="router-link-grid p-4">
-          <HomeReportBox title="Clientes Cadastrados"/>
-          <HomeReportBox title="Usuarios Cadastrados"/>
-          <HomeReportBox title="Produtos Cadastrados"/>
-          <HomeReportBox title="Pedidos da Semana" :type="'WeekOrders'"/>
-          <HomeReportBox title="Total Em Vendas da Semana" :type="'WeekOrdersTotal'" />
-          <HomeReportBox title="Total Em Vendas do Mês" :type="'MonthOrdersTotal'"/>
+        <div class="router-link-grid mt-auto">
+          <HomeReportBox title="Clientes Cadastrados">
+            2
+          </HomeReportBox>
+          <HomeReportBox title="Usuarios Cadastrados">45</HomeReportBox>
+          <HomeReportBox title="Produtos Cadastrados">12</HomeReportBox>
+          <HomeReportBox title="Pedidos da Semana" >{{listOrderStore.weekOrdersCount }}</HomeReportBox>
+          <HomeReportBox title="Total Em Vendas da Semana"> R$ {{ toCurrency(listOrderStore.weekFinalPriceTotal) }}</HomeReportBox>
+          <HomeReportBox title="Total Em Vendas do Mês"> R$ {{toCurrency(listOrderStore.monthFinalPriceTotal) }}</HomeReportBox>
         </div>
-    </footer>
-  </section>
+  </Section>
+
 
 </template>
 

@@ -6,7 +6,6 @@ import { onMounted } from 'vue'
 type StatBoxProps = {
   title?: string,
   value?: string | number,
-  type?: string,
 }
 
 const listOrderStore = useListOrderStore()
@@ -32,14 +31,8 @@ const props = withDefaults(defineProps<StatBoxProps>(), {
       <div class="text-xs uppercase tracking-wide text-zinc-400">
         {{ props.title }}
       </div>
-      <div class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100" v-if="props.type === 'WeekOrders'" >
-        {{listOrderStore.weekOrdersCount}}
-      </div>
-      <div class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100" v-if="props.type === 'WeekOrdersTotal'" >
-        {{listOrderStore.weekFinalPriceTotal}}
-      </div>
-      <div class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100" v-if="props.type === 'MonthOrdersTotal'" >
-        {{listOrderStore.monthFinalPriceTotal}}
+      <div class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100" >
+        <slot />
       </div>
     </div>
   </div>

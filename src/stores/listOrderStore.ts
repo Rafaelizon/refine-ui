@@ -32,7 +32,7 @@ export const useListOrderStore = defineStore('order-list', () => {
         .finally(() => {
           state.loading = false
         })
-    }, 500)
+    }, )
   }
 
   const fetchOrdersThisWeek = () => {
