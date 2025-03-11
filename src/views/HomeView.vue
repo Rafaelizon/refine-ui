@@ -42,8 +42,8 @@ import HomeReportBox from '@/components/HomeReportBox.vue';
           <HomeReportBox title="Usuarios Cadastrados"/>
           <HomeReportBox title="Produtos Cadastrados"/>
           <HomeReportBox title="Pedidos da Semana" :type="'WeekOrders'"/>
-          <HomeReportBox title="Total Em Vendas da Semana" />
-          <HomeReportBox title="Total Em Vendas do Mês"/>
+          <HomeReportBox title="Total Em Vendas da Semana" :type="'WeekOrdersTotal'" />
+          <HomeReportBox title="Total Em Vendas do Mês" :type="'MonthOrdersTotal'"/>
         </div>
     </footer>
   </section>

@@ -3,11 +3,12 @@ import { http } from '@/services/http'
 import { computed, reactive } from 'vue'
 import type { AxiosResponse } from 'axios'
 import type { OrderParams } from '@/types/order.params.type'
+import type { Order } from '@/types/order.type'
 
 export const useListOrderStore = defineStore('order-list', () => {
   const ORDERS_ENDPOINT = '/orders'
   // Separate arrays for week and month orders
-  const state = reactive({ loading: false, error: false, weekOrderList: [], monthOrderList: [] })
+  const state = reactive({ loading: false, error: false, weekOrderList: [] as Order[], monthOrderList: [] as Order[]})
 
   // Generic fetchOrders function that updates the target array based on the filter
   const fetchOrders = (params: OrderParams, target: 'week' | 'month') => {
@@ -57,5 +58,14 @@ export const useListOrderStore = defineStore('order-list', () => {
   const weekOrdersCount = computed(() => state.weekOrderList.length)
   const monthOrdersCount = computed(() => state.monthOrderList.length)
 
-  return { fetchOrdersThisWeek, fetchOrdersThisMonth, state, weekOrdersCount, monthOrdersCount }
+  const monthFinalPriceTotal = computed(() =>
+    state.monthOrderList.reduce((total, order) => total + order.finalPrice, 0)
+  )
+
+  const weekFinalPriceTotal = computed(() =>
+    state.weekOrderList.reduce((total, order) => total + order.finalPrice, 0)
+  )
+
+
+  return { fetchOrdersThisWeek, fetchOrdersThisMonth, state, weekOrdersCount, monthOrdersCount, monthFinalPriceTotal, weekFinalPriceTotal }
 })
