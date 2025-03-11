@@ -72,7 +72,6 @@ export const useAuthStore = defineStore('auth', () => {
       !!authentication.value.token &&
       !!authentication.value.email &&
       !!authentication.value.role &&
-      !!authentication.value.name &&
       !!authentication.value.credential
     )
   }

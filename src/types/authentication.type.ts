@@ -4,6 +4,5 @@ export type Authentication = {
   credential: string
   role: UserRole
   email: string
-  name: string
   token: string
 }
