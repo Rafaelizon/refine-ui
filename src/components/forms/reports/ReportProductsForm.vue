@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { type FormField } from './Form.vue';
-import ReportForm from './reports/ReportForm.vue';
+import { type FormField } from '../Form.vue';
+import ReportForm from '../reports/ReportForm.vue';
 
 const title = 'Produtos Vendidos';
 const reportFields: FormField[] = [
-  { key: 'dateFrom', type: 'date', label: 'De', placeholder: 'Data de início' },
-  { key: 'dateTo', type: 'date', label: 'Até', placeholder: 'Data de fim' },
+  { key: 'dateFrom', type: 'datetime-local', label: 'De', placeholder: 'Data de início' },
+  { key: 'dateTo', type: 'datetime-local', label: 'Até', placeholder: 'Data de fim' },
   { key: 'productGroup', type: 'text', label: 'Grupo do Produto', placeholder: 'Digite o Grupo' },
   { key: 'ProductSearch', type: 'text', label: 'Buscar por Produto', placeholder: 'Digite o produto' },
   {

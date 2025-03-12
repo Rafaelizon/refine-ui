@@ -3,8 +3,6 @@ import { useOrderStore } from '@/stores/order.store';
 import { useScheduleStore } from '@/stores/schedule.store';
 import { computed, onBeforeUnmount, onMounted } from 'vue';
 import Card from '../card/Card.vue';
-import CardBody from '../card/CardBody.vue';
-import CardTitle from '../card/CardTitle.vue';
 import Divider from '../Divider.vue';
 import DividerDot from '../DividerDot.vue';
 import Icon from '../Icon.vue';
@@ -37,14 +35,18 @@ const formatTime = (time: string) => {
 <template>
   <section class="grid grid-rows-[auto_1fr] flex-grow gap-4">
     <Card>
-      <CardTitle icon="fa-utensils">
+      <template #cardTitleIcon>
+        <Icon icon="fa-utensils" class="text-sky-600" />
+      </template>
+      <template #cardTitle>
         <p class="mr-auto">Atendimento</p>
         <JumpInTransition>
           <Spinner v-if="scheduleStore.state.loading" />
         </JumpInTransition>
-      </CardTitle>
+      </template>
 
-      <CardBody class="relative">
+
+      <template #cardBody>
         <JumpInTransition>
           <section v-if="schedule">
             <div>
@@ -96,10 +98,10 @@ const formatTime = (time: string) => {
           </section>
         </JumpInTransition>
 
-      </CardBody>
+      </template>
     </Card>
     <Card class="grid place-items-center">
-      <CardBody>
+      <template #cardBody>
         <section v-if="!schedule?.current">
           <p class="text-2xl">Não estamos servindo no momento, <br>Aguarde o próximo atendimento.</p>
         </section>
@@ -115,7 +117,7 @@ const formatTime = (time: string) => {
           </p>
 
         </section>
-      </CardBody>
+      </template>
     </Card>
   </section>
 </template>

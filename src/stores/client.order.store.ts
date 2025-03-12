@@ -4,7 +4,6 @@ import { computed, reactive, ref } from 'vue'
 import { useModalStore } from './modal.store'
 import type { Client } from '@/types/client.type'
 import { useScheduleStore } from './schedule.store'
-import { AtendimentoCode } from '@/types/atendimento.type'
 
 export const useClientOrderStore = defineStore('client_order', () => {
   const CLIENT_ENDPOINT = '/clients'

@@ -56,7 +56,9 @@ const showScaleSection = computed(() => {
         <SelfServiceClientInfo />
         <SelfServiceScale v-if="showScaleSection" />
         <SelfServiceProducts />
-        <SelfServiceTotal class="mt-auto" />
+        <div class="mt-auto">
+          <SelfServiceTotal />
+        </div>
       </section>
     </Container>
   </section>

@@ -1,4 +1,3 @@
 <template>
-  <hr class="border-zinc-200 dark:border-zinc-100/10" />
-
+  <hr class="border-zinc-100 dark:border-zinc-100/10" />
 </template>

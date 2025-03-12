@@ -4,9 +4,6 @@ import { toCurrency } from '@/utils/currency';
 import { computed } from 'vue';
 import Avatar from '../Avatar.vue';
 import Card from '../card/Card.vue';
-import CardBody from '../card/CardBody.vue';
-import CardTitle from '../card/CardTitle.vue';
-import Divider from '../Divider.vue';
 import Icon from '../Icon.vue';
 
 const orderStore = useOrderStore();
@@ -18,9 +15,12 @@ const state = computed(() => orderStore.state);
 <template>
   <section>
     <Card>
-      <CardTitle icon="fa-info-circle">Informações</CardTitle>
-      <CardBody>
-        <section v-if="!state.error && client">
+      <template #cardTitleIcon>
+        <Icon icon="fa-info-circle" class="text-sky-600" />
+      </template>
+      <template #cardTitle>Informações</template>
+      <template #cardBody>
+        <section v-if="!state.error && client" class="flex flex-col gap-4 divide-y">
           <div class="flex items-center gap-4">
             <Avatar :seed="client.name" size="small" />
             <div>
@@ -33,8 +33,7 @@ const state = computed(() => orderStore.state);
             </div>
           </div>
 
-          <Divider class="my-4" />
-          <div class="flex items-center gap-4 justify-between">
+          <div v-if="client.balance" class="flex items-center justify-between gap-4 pt-4">
             <div class="flex items-center gap-2">
               <Icon icon="wallet" color="text-sky-600" />
               <p>Saldo:</p>
@@ -42,7 +41,7 @@ const state = computed(() => orderStore.state);
             <p><span class="text-zinc-400">R$</span> {{ toCurrency(client.balance) }}</p>
           </div>
         </section>
-      </CardBody>
+      </template>
     </Card>
 
   </section>

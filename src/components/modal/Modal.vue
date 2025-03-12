@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Teleport } from 'vue';
 import Card from '../card/Card.vue';
-import CardBody from '../card/CardBody.vue';
-import CardTitle from '../card/CardTitle.vue';
 import Button from '../Button.vue';
 import Icon from '../Icon.vue';
 
@@ -41,13 +39,18 @@ const colors = new Map<ModalVariant, string>([
 
         <Transition name="modal-content">
           <Card v-if="show" class="transition-all w-[450px]">
-            <CardTitle v-if="title" class="!p-2 !pl-4" :icon="titleIcon" :icon-color="colors.get(variant)">
-              <p>{{ title }}</p>
-              <Button :click="() => $emit('on-close')" variant="secondary-text" class="ml-auto">
-                <Icon icon="fa-xmark" />
-              </Button>
-            </CardTitle>
-            <CardBody class="grid">
+            <template #cardTitleIcon v-if="titleIcon">
+              <Icon :icon="titleIcon" :class="colors.get(variant)" />
+            </template>
+            <template #cardTitle v-if="title">
+              <div class="flex items-center justify-between w-full">
+                <p>{{ title }}</p>
+                <Button :click="() => $emit('on-close')" variant="secondary-text" class="-my-2 -mx-2">
+                  <Icon icon="fa-xmark" />
+                </Button>
+              </div>
+            </template>
+            <template #cardBody class="grid">
               <slot />
               <section class="flex gap-4 justify-center mt-4" v-if="actionButtons">
                 <Button :click="() => $emit('on-close')" class="justify-center w-full" variant="secondary">
@@ -57,7 +60,7 @@ const colors = new Map<ModalVariant, string>([
                   {{ confirmText }}
                 </Button>
               </section>
-            </CardBody>
+            </template>
           </Card>
         </Transition>
       </div>

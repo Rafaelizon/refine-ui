@@ -3,5 +3,5 @@ export type Client = {
   name: string
   role: string
   salary: number
-  balance: number
+  balance?: number
 }

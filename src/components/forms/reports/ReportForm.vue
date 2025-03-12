@@ -7,7 +7,7 @@ defineProps<{ title: string, fields: FormField[] }>();
 
 <template>
   <Form :title="title" :fields="fields">
-    <template #form-actions>
+    <template #formActions>
       <Button type="submit">
         <Icon icon="fa-regular fa-clipboard" />
         Gerar relatório

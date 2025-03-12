@@ -4,7 +4,7 @@
   </Transition>
 </template>
 
-<style>
+<style scoped>
 .jump-in-enter-active,
 .jump-in-leave-active {
   transition: all 250ms ease;

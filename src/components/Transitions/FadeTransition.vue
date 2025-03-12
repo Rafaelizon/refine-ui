@@ -3,7 +3,7 @@
     <slot />
   </Transition>
 </template>
-<style>
+<style scoped>
 .fade-enter-active {
   transition: all 250ms ease 150ms;
 }

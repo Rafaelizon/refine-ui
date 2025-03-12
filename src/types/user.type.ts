@@ -1,5 +1,11 @@
 type User = {
   credential: string
   name: string
-  balance: number
+}
+
+export enum UserRole {
+  'ADMIN',
+  'SELF_SERVICE',
+  'STOCK',
+  'TREASURY',
 }
