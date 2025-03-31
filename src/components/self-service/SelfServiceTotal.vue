@@ -1,26 +1,25 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores/cart.store';
 import { useScaleStore } from '@/stores/scale.store';
-import { useScheduleStore } from '@/stores/schedule.store';
+import { useSelfServiceOrderStore } from '@/stores/self-service-order-store';
 import { toCurrency } from '@/utils/currency';
 import { formatWeight } from '@/utils/decimal';
-import { useToggle } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import Button from '../Button.vue';
 import Card from '../card/Card.vue';
+import Divider from '../Divider.vue';
 import Icon from '../Icon.vue';
 import Modal from '../modal/Modal.vue';
-import Divider from '../Divider.vue';
-import { useSelfServiceOrderStore } from '@/stores/self-service-order-store';
 
-const showPriceInfoModal = ref(false);
 const cartStore = useCartStore();
 const scaleStore = useScaleStore();
 const orderStore = useSelfServiceOrderStore();
 const weight = computed(() => scaleStore.weight);
 const cart = computed(() => cartStore.cart)
 
-const togglePriceInfoModal = useToggle(showPriceInfoModal);
+const showPriceInfoModal = ref(false);
+const openPriceInfoModal = () => showPriceInfoModal.value = true;
+const closePriceInfoModal = () => showPriceInfoModal.value = false;
 
 type PricingItem = {
   title: string,
@@ -30,7 +29,6 @@ type PricingItem = {
 
 const pricingItems = computed<PricingItem[]>(() => [
   { title: 'Subtotal', body: toCurrency(cart.value.originalPrice, { suffix: true }) },
-  { title: 'Subsídio', body: `${cart.value.discount} %` },
   { title: 'Desconto', body: `<span class="text-teal-500">-${toCurrency(cart.value.discountedPrice, { suffix: true })}</span>` },
   { title: 'Total', body: toCurrency(cart.value.finalPrice, { suffix: true }) }
 ])
@@ -46,7 +44,7 @@ const pricingItems = computed<PricingItem[]>(() => [
       <div class="flex items-center justify-between w-full">
         <p>Precificação</p>
         <Button v-if="cartStore.valid" variant="secondary" :class="{ '-my-2 -mx-2': cartStore.valid }"
-          :click="() => togglePriceInfoModal()">
+          :click="() => openPriceInfoModal()">
           <Icon icon="fa-question" />
         </Button>
       </div>
@@ -62,7 +60,7 @@ const pricingItems = computed<PricingItem[]>(() => [
     </template>
 
   </Card>
-  <Modal :show="showPriceInfoModal" title="Detalhes" @on-close="togglePriceInfoModal()">
+  <Modal :show="showPriceInfoModal" title="Detalhes" @on-close="closePriceInfoModal()">
     <div class="divide-dashed divide-zinc-200 dark:divide-zinc-100/10">
       <section class="flex flex-col gap-2 pb-4">
         <p>Produtos</p>

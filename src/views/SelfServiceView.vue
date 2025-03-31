@@ -11,11 +11,11 @@ import SelfServiceScale from '@/components/self-service/SelfServiceScale.vue';
 import SelfServiceTotal from '@/components/self-service/SelfServiceTotal.vue';
 import Spinner from '@/components/Spinner.vue';
 import { useCartStore } from '@/stores/cart.store';
+import { useFullscreenStore } from '@/stores/fullscreen.store';
 import { useScaleStore } from '@/stores/scale.store';
 import { useScheduleStore } from '@/stores/schedule.store';
 import { useSelfServiceOrderStore } from '@/stores/self-service-order-store';
-import { useFullscreen } from '@vueuse/core';
-import { computed, onBeforeUnmount, ref } from 'vue';
+import { computed, onBeforeUnmount } from 'vue';
 
 onBeforeUnmount(() => {
   cartStore.reset();
@@ -24,9 +24,7 @@ onBeforeUnmount(() => {
 })
 
 
-const element = ref<HTMLElement>();
-const { toggle } = useFullscreen(element);
-
+const { toggle } = useFullscreenStore();
 const orderStore = useSelfServiceOrderStore();
 const scheduleStore = useScheduleStore();
 const scaleStore = useScaleStore();
@@ -47,7 +45,7 @@ const showScaleSection = computed(() => {
 
 </script>
 <template>
-  <section ref="element" class="h-full bg-[#f5f5f5] text-black dark:bg-zinc-800 dark:text-white">
+  <section class="h-full bg-[#f5f5f5] text-black dark:bg-zinc-800 dark:text-white">
     <SelfServiceHeader @fullscreen="toggle" />
     <Container class="grid grid-cols-2 pt-4 gap-4" :class="{ 'grid-cols-1': !serving }">
       <section class="flex flex-col gap-4 h-[calc(100dvh-113px)]">

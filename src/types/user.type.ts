@@ -9,8 +9,8 @@ export type User = {
 }
 
 export enum UserRole {
-  'ADMIN',
-  'SELF_SERVICE',
-  'STOCK',
-  'TREASURY',
+  'ADMIN' = 'ADMIN',
+  'SELF_SERVICE' = 'SELF_SERVICE',
+  'STOCK' = 'STOCK',
+  'TREASURY' = 'TREASURY',
 }

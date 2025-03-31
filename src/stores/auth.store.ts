@@ -1,5 +1,6 @@
 import { http } from '@/services/http'
 import type { Authentication } from '@/types/authentication.type'
+import type { ServerError } from '@/types/server-error.type'
 import type { User } from '@/types/user.type'
 import type { AxiosError } from 'axios'
 import { defineStore } from 'pinia'
@@ -10,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
   const AUTH_ENDPOINT = '/auth'
   const USER_ENDPOINT = '/users'
 
-  const state = reactive({ loading: false, error: false })
+  const state = reactive({ loading: false, error: '' })
   const authentication = ref<Authentication>()
   const user = ref<User>()
 
@@ -61,7 +62,10 @@ export const useAuthStore = defineStore('auth', () => {
           saveAuthentication({ id: parseInt(userId), token: token })
         }
       })
-      .catch((e) => console.log(e))
+      .catch((e: AxiosError) => {
+        console.log(e)
+        state.error = 'Erro de servidor, tente novamente mais tarde.'
+      })
 
     if (authentication.value && !user.value) {
       await fetchAuthenticatedUser(parseInt(userId))
@@ -76,8 +80,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const handleError = (error: AxiosError) => {
-    state.error = true
-    console.error(error)
+    var serverError = error.response?.data as ServerError
+
+    if (!serverError) {
+      console.error(error)
+      state.error = 'Erro de servidor, tente novamente mais tarde.'
+      return
+    }
+
+    if (serverError.status === 401) {
+      state.error = 'E-mail ou senha inválidos'
+      console.error(error)
+      return
+    }
   }
 
   const saveAuthentication = (auth: Authentication) => {
@@ -96,9 +111,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const beginRequest = () => {
-    state.error = false
+    state.error = ''
     state.loading = true
   }
 
-  return { authentication, user, login, logout, isAuthenticated, checkAuthentication }
+  return { authentication, user, login, logout, isAuthenticated, checkAuthentication, state }
 })

@@ -8,7 +8,7 @@ withDefaults(defineProps<{
 })
 
 const cardSizeStyles = new Map<CardSize, string>([
-  ['normal', 'p-4 gap-4'],
+  ['normal', 'p-3.5 gap-3.5'],
   ['small', 'p-2.5 gap-2 text-sm']
 ])
 </script>

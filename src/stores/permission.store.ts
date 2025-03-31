@@ -1,19 +1,26 @@
-import type { UserRole } from '@/types/user.role.type'
+import type { UserRole } from '@/types/user.type'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useAuthStore } from './auth.store'
 
 export const usePermissionStore = defineStore('permission', () => {
   const authStore = useAuthStore()
 
-  const role = computed(() => authStore.authentication?.role)
+  const role = computed(() => authStore.user?.role)
 
   const permissions: Record<UserRole, { allowedRoutes: string[]; defaultRedirect?: string }> = {
-    ADMIN: { allowedRoutes: ['/login', '/home', '/self-service', '/products', '/reports', '/manual-service'] },
+    ADMIN: {
+      allowedRoutes: [
+        '/login',
+        '/home',
+        '/self-service',
+        '/products',
+        '/reports',
+        '/manual-service',
+      ],
+    },
     SELF_SERVICE: { allowedRoutes: ['/login', '/self-service'], defaultRedirect: '/self-service' },
-    EMPLOYEE: { allowedRoutes: [] },
     STOCK: { allowedRoutes: [] },
-    TERTIARY: { allowedRoutes: [] },
     TREASURY: { allowedRoutes: [] },
   }
 

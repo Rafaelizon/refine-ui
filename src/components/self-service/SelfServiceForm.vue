@@ -11,6 +11,8 @@ import Card from '../card/Card.vue';
 import Input from '../forms/fields/Input.vue';
 import Icon from '../Icon.vue';
 import Modal from '../modal/Modal.vue';
+import Divider from '../Divider.vue';
+import { toCurrency } from '@/utils/currency';
 
 const reader = ref<string>('');
 
@@ -29,6 +31,9 @@ const toggleResetModal = useToggle(resetModalOpen);
 
 const confirmOderModalOpen = ref<boolean>(false);
 const toggleConfirmOrderModal = useToggle(confirmOderModalOpen);
+
+const negativeBalanceModalOpen = ref<boolean>(false);
+const toggleNegativeBalanceModalOpen = useToggle(negativeBalanceModalOpen);
 
 const reset = () => {
   cartStore.reset();
@@ -63,11 +68,10 @@ const handleConfirm = () => {
     return;
   }
 
-  if (!weight.value) {
-    modalStore.error('Peso não detectado', 'Verifique se a balança leu corretamento o peso do prato e tente novamente.')
+  if (client.value && client.value.balance !== undefined && client.value.balance - cartStore.cart.finalPrice < 0) {
+    toggleNegativeBalanceModalOpen();
     return;
   }
-
 
   createOrder();
 }
@@ -95,9 +99,15 @@ const createOrder = () => {
 
 const createOrderFromButton = () => {
   toggleConfirmOrderModal();
-  if (!currentAtendimento.value || !client.value) {
+  if (client.value && client.value.balance !== undefined && client.value.balance - cartStore.cart.finalPrice < 0) {
+    toggleNegativeBalanceModalOpen();
     return;
   }
+  createOrder();
+}
+
+const createOrderFromBalanceModal = () => {
+  toggleNegativeBalanceModalOpen();
   createOrder();
 }
 
@@ -130,7 +140,7 @@ onMounted(() => {
       <template #cardBody>
         <form @submit.prevent="handleReaderSubmit">
           <Input id="barcode" ref="barcodeInput" v-model="reader" :blur="handleBlur" size="large"
-            :disabled="!currentAtendimento" autofocus required />
+            :disabled="!currentAtendimento" required />
         </form>
       </template>
     </Card>
@@ -153,6 +163,45 @@ onMounted(() => {
     <Modal :show="confirmOderModalOpen" @on-close="() => confirmOderModalOpen = false"
       @on-confirm="createOrderFromButton" title="Confirmar pedido?" action-buttons>
       <p>Tem certeza que deseja confirmar o pedido?</p>
+    </Modal>
+
+    <Modal :show="negativeBalanceModalOpen"
+      :title="client?.balance! < 0 ? 'Seu saldo está negativo' : 'Seu saldo será negativado'"
+      confirm-text="Estou ciente" @on-close="() => negativeBalanceModalOpen = false"
+      @on-confirm="createOrderFromBalanceModal()" action-buttons>
+      <div class="space-y-4">
+
+        <p class="font-light">
+          Caso chegue ao limite de
+          <span class="font-semibold">{{ toCurrency(-100, { suffix: true }) }}</span>, sua conta será
+          <span class="font-semibold">suspensa</span> de abrir novas comandas.
+        </p>
+        <p class="font-light">
+          Favor dirija-se à Tesouraria.
+        </p>
+
+        <Divider />
+        <ul class="space-y-2 text-sm" v-if="client?.balance !== undefined">
+          <li class="flex items-center justify-between">
+            <p>Limite de saldo negativo:</p>
+            <p>{{ toCurrency(-100, { suffix: true }) }}</p>
+          </li>
+          <li class="flex items-center justify-between">
+            <p>Saldo atual:</p>
+            <p :class="{ 'text-rose-500': client.balance < 0 }">
+              {{ toCurrency(client.balance, { suffix: true }) }}</p>
+          </li>
+          <li class="flex items-center justify-between">
+            <p>Valor total da compra:</p>
+            <p>{{ toCurrency(cartStore.cart.finalPrice, { suffix: true }) }}</p>
+          </li>
+          <li class="flex items-center justify-between ">
+            <p>Saldo após a compra:</p>
+            <p class="text-rose-500">{{ toCurrency(client.balance - cartStore.cart.finalPrice, { suffix: true }) }}</p>
+          </li>
+        </ul>
+      </div>
+
     </Modal>
   </section>
 

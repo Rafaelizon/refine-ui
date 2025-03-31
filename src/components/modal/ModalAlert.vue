@@ -25,10 +25,11 @@ const variant = new Map<ModalType, { color: string, ring: string, icon: string }
 
       <div class="text-center">
         <p class="text-lg">{{ modalStore.title }}</p>
-        <p class="text-zinc-500 text-sm" v-html="modalStore.body"></p>
+        <p class="text-zinc-500 dark:text-zinc-300 text-sm" v-html="modalStore.body"></p>
       </div>
 
-      <Button v-if="showButton" class="w-full justify-center" autofocus="true" :click="modalStore.close">
+      <Button v-if="showButton" class="w-full justify-center"
+        :variant="modalStore.type === 'success' ? 'primary' : 'danger'" :click="modalStore.close">
         OK
       </Button>
     </div>

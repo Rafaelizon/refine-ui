@@ -12,7 +12,8 @@ withDefaults(defineProps<{
   actionButtons?: boolean,
   confirmText?: string,
   cancelText?: string,
-  variant?: ModalVariant
+  variant?: ModalVariant,
+  modalClasses?: string | string[]
 }>(), {
   variant: 'info',
   confirmText: 'Confirmar',
@@ -27,11 +28,18 @@ const colors = new Map<ModalVariant, string>([
   ['success', 'text-teal-500']
 ])
 
-const buttonVariants = new Map<ModalVariant, ButtonVariant>([
+const actionButtonVariants = new Map<ModalVariant, ButtonVariant>([
   ['info', 'primary'],
   ['danger', 'danger'],
   ['success', 'success'],
-  ['warning', 'danger'],
+  ['warning', 'warning'],
+])
+
+const closeButtonVariants = new Map<ModalVariant, ButtonVariant>([
+  ['info', 'primary-text'],
+  ['danger', 'danger-text'],
+  ['success', 'success-text'],
+  ['warning', 'warning-text'],
 ])
 
 
@@ -44,14 +52,15 @@ const buttonVariants = new Map<ModalVariant, ButtonVariant>([
         class="absolute z-20 top-0 left-0 bg-black/60 w-full h-full grid place-items-center">
 
         <Transition name="modal-content">
-          <Card v-if="show" class="transition-all w-[450px]">
+          <Card v-if="show" class="transition-all w-[450px]" :class="modalClasses">
             <template #cardTitleIcon v-if="titleIcon">
               <Icon :icon="titleIcon" :class="colors.get(variant)" />
             </template>
             <template #cardTitle v-if="title">
               <div class="flex items-center justify-between w-full">
                 <p>{{ title }}</p>
-                <Button :click="() => $emit('on-close')" variant="secondary-text" class="-my-2 -mx-2">
+                <Button :click="() => $emit('on-close')" :variant="closeButtonVariants.get(variant)"
+                  class="-my-2 -mx-2">
                   <Icon icon="fa-xmark" />
                 </Button>
               </div>
@@ -64,7 +73,7 @@ const buttonVariants = new Map<ModalVariant, ButtonVariant>([
                   <Button :click="() => $emit('on-close')" class="justify-center w-full" variant="secondary">
                     {{ cancelText }}
                   </Button>
-                  <Button :variant="buttonVariants.get(variant)" :click="() => $emit('on-confirm')"
+                  <Button :variant="actionButtonVariants.get(variant)" :click="() => $emit('on-confirm')"
                     class="justify-center w-full">
                     {{ confirmText }}
                   </Button>

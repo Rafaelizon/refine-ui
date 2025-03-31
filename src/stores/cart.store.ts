@@ -174,6 +174,17 @@ export const useCartStore = defineStore('cart', () => {
       return
     }
 
+    if (error.error === 'BALANCE_LIMIT_REACHED') {
+      modalStore.error(
+        'Limite de saldo negativo atingido',
+        'Essa compra faria com que seu saldo atingisse o limite de saldo negativo de  <span class="text-nowrap font-semibold">-R$ 100,00</span>, e por isso foi negada. <br/> Favor contate a tesouraria.',
+      )
+      console.log(cart.value)
+      console.log(itemsRequest.value)
+
+      return
+    }
+
     modalStore.error(baseTitle, baseMessage)
   }
 

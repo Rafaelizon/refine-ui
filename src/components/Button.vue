@@ -3,8 +3,8 @@ import { computed } from 'vue';
 import Icon from './Icon.vue';
 
 export type ButtonVariant =
-  'primary' | 'secondary' | 'danger' | 'success'
-  | 'primary-text' | 'secondary-text' | 'danger-text' | 'success-text';
+  'primary' | 'secondary' | 'danger' | 'success' | 'warning'
+  | 'primary-text' | 'secondary-text' | 'danger-text' | 'success-text' | 'warning-text';
 
 const props = withDefaults(defineProps<{
   variant?: ButtonVariant,
@@ -22,11 +22,13 @@ const styles = new Map<ButtonVariant, string>([
   ['secondary', 'bg-zinc-800/5 dark:bg-zinc-100/10 hover:bg-zinc-800/10 dark:hover:bg-zinc-100/20 dark:border-zinc-100/10 text-zinc-800 dark:text-zinc-300 shadow-sm'],
   ['danger', 'bg-rose-400 hover:bg-rose-400/90 text-white shadow-sm'],
   ['success', 'bg-teal-500 hover:bg-teal-500/80 text-white shadow-sm'],
+  ['warning', 'bg-yellow-500 hover:bg-yellow-500/80 text-white shadow-sm'],
 
-  ['primary-text', 'text-sky-600 hover:bg-sky-600/10'],
+  ['primary-text', 'text-sky-600 hover:bg-sky-50'],
   ['secondary-text', 'text-zinc-800 dark:text-zinc-300 hover:bg-zinc-800/5 dark:hover:bg-zinc-100/10'],
-  ['danger-text', 'text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-400/10'],
-  ['success-text', 'text-teal-500 hover:bg-teal-500/20'],
+  ['danger-text', 'text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-50'],
+  ['success-text', 'text-teal-500 hover:bg-teal-50'],
+  ['warning-text', 'text-yellow-500 hover:bg-yellow-50']
 ]);
 
 

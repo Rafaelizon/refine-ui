@@ -33,7 +33,7 @@ const state = computed(() => orderStore.state);
             </p>
           </div>
 
-          <div v-if="client.balance" class="flex items-center justify-between gap-4 pt-4">
+          <div v-if="client.balance !== undefined" class="flex items-center justify-between gap-4 pt-4">
             <div class="flex items-center gap-2">
               <Icon icon="wallet" color="text-sky-600" />
               <p>Saldo:</p>
